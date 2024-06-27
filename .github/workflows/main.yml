@@ -1,0 +1,49 @@
+name: Deploy to Vertex AI
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to the branch you want to trigger on
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+    - name: Authenticate to Google Cloud
+      run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+    
+    - name: Modify the model
+      run: |
+        python model.py
+    
+    - name: Configure Docker
+      run: gcloud auth configure-docker
+
+    - name: Build Docker image
+      run: |
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/model-server:latest .
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/model-server:latest
+
+    - name: Upload model to GCS
+      run: |
+        gsutil cp model.pkl gs://$GCS_BUCKET_NAME/random_forest_model.pkl
+
+    - name: Install dependencies
+      run: pip install google-cloud-aiplatform
+
+    - name: Deploy to Vertex AI
+      run: python deploy_to_vertex.py
+
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
