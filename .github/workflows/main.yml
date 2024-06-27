@@ -20,8 +20,11 @@ jobs:
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
     - name: Authenticate to Google Cloud
-      run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-    
+      run: echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > ${{ github.workspace }}/key.json
+
+    - name: Authenticate to Google Cloud
+      run: gcloud auth activate-service-account --key-file=${{ github.workspace }}/key.json
+
     - name: Modify the model
       run: |
         python model.py
