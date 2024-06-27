@@ -19,12 +19,10 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-    - name: Create service account key file
-      run: |
-        python -c "import os; content = os.getenv('GCP_SERVICE_ACCOUNT_KEY').replace('\\n', '\n'); open('${{ github.workspace }}/key.json', 'w').write(content)"
-
     - name: Authenticate to Google Cloud
-      run: gcloud auth activate-service-account --key-file=${{ github.workspace }}/key.json
+      run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+    
 
     - name: Modify the model
       run: |
