@@ -3,7 +3,7 @@ FROM python:3.8-slim
 
 WORKDIR /app
 
-COPY model.pkl .
+COPY random_forest_model.pkl .
 
 # Install necessary libraries
 RUN pip install scikit-learn flask gunicorn
