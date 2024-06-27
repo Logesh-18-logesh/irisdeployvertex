@@ -4,7 +4,7 @@ import pickle
 app = Flask(__name__)
 
 # Load the model
-with open('model.pkl', 'rb') as file:
+with open('random_forest_model.pkl', 'rb') as file:
     model = pickle.load(file)
 
 @app.route('/predict', methods=['POST'])
