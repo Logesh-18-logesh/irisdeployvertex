@@ -28,13 +28,12 @@ jobs:
       run: |
         python model.py
     
-    - name: Configure Docker
-      run: gcloud auth configure-docker asia-south2-docker.pkg.dev
-
+ 
     - name: Build Docker image
       run: |
-        docker build -t asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/model-server:latest .
-        docker push asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/model-server:latest
+        gcloud auth configure-docker \asia-south2-docker.pkg.dev
+        docker build -t asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/model-server/img:latest .
+        docker push asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/model-server/img:latest
 
     - name: Upload model to GCS
       run: |
