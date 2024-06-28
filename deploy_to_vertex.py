@@ -8,7 +8,7 @@ def deploy_model():
     # Upload the model
     model = aiplatform.Model.upload(
         display_name='my-model',
-        artifact_uri=f'gs://{os.getenv('GCS_BUCKET_NAME')}/random_forest_model.pkl',
+        artifact_uri=f'gs://${{ secrets.GCS_BUCKET_NAME }}/random_forest_model.pkl',
         serving_container_image_uri=f'gcr.io/{os.getenv('GCP_PROJECT_ID')}/model-server:latest',
     )
 
