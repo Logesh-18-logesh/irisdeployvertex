@@ -3,14 +3,19 @@ from google.cloud import aiplatform
 
 def deploy_model():
     # Initialize the Vertex AI client
-    aiplatform.init(project='${{ secrets.GCP_PROJECT_ID }}', location='asia-south1')
+    project_id = os.getenv('GCP_PROJECT_ID')
+    bucket_name = os.getenv('GCS_BUCKET_NAME')
+
+    aiplatform.init(project=project_id, location='asia-south1')
 
     # Upload the model
     model = aiplatform.Model.upload(
         display_name='my-model',
-        artifact_uri=f'gs://${{ secrets.GCS_BUCKET_NAME }}/random_forest_model.pkl',
-        serving_container_image_uri=f'gcr.io/${{ secrets.GCP_PROJECT_ID }}/model-server:latest',
+        artifact_uri=f'gs://{bucket_name}/random_forest_model.pkl',
+        serving_container_image_uri=f'asia-south2-docker.pkg.dev/{project_id}/model-server/img:latest',
     )
+
+    model.wait()  # Wait for the model to finish uploading
 
     # Deploy the model to an endpoint
     endpoint = model.deploy(
