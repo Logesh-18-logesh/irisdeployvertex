@@ -6,13 +6,13 @@ def deploy_model():
     project_id = os.getenv('GCP_PROJECT_ID')
     bucket_name = os.getenv('GCS_BUCKET_NAME')
 
-    aiplatform.init(project=project_id, location='asia-south1')
+    aiplatform.init(project=project_id)
 
     # Upload the model
     model = aiplatform.Model.upload(
         display_name='my-model',
         artifact_uri=f'gs://{bucket_name}/random_forest_model.pkl',
-        serving_container_image_uri=f'asia-south1-docker.pkg.dev/{project_id}/model-server/img:latest',
+        serving_container_image_uri=f'asia-south2-docker.pkg.dev/{project_id}/model-server/img:latest',
     )
 
     model.wait()  # Wait for the model to finish uploading
