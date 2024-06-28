@@ -3,7 +3,7 @@ from google.cloud import aiplatform
 
 def deploy_model():
     # Initialize the Vertex AI client
-    aiplatform.init(project=os.getenv('GCP_PROJECT_ID'), location='asia-south1')
+    aiplatform.init(project=${{ secrets.GCP_PROJECT_ID }}, location='asia-south1')
 
     # Upload the model
     model = aiplatform.Model.upload(
