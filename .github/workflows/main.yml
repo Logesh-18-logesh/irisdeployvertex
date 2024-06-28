@@ -27,13 +27,10 @@ jobs:
     - name: Modify the model
       run: |
         python model.py
-    - name: LOGIN cli
-      uses: google-github-actions/auth@v0
-      with:
-        credentials_json: ${{ secrets.CLI_KEY }}
- 
+    
     - name: Build Docker image
       run: |
+        gcloud auth login
         gcloud auth configure-docker asia-south2-docker.pkg.dev
         docker build -t asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/model-server/img:latest .
         docker push asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/model-server/img:latest
