@@ -11,7 +11,7 @@ def deploy_model():
     # Upload the model
     model = aiplatform.Model.upload(
         display_name='my-model',
-        artifact_uri='gs://irisdeploy1/random_forest_model.pkl',
+        artifact_uri='gs://irisdeploy1',
         serving_container_image_uri=f'asia-south2-docker.pkg.dev/{project_id}/model-server/img:latest',
     )
 
