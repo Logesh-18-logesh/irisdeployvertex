@@ -29,12 +29,12 @@ jobs:
         python model.py
     
     - name: Configure Docker
-      run: gcloud auth configure-docker
+      run: gcloud auth configure-docker asia-south2-docker.pkg.dev
 
     - name: Build Docker image
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/model-server:latest .
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/model-server:latest
+        docker build -t asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/model-server:latest .
+        docker push asia-south2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/model-server:latest
 
     - name: Upload model to GCS
       run: |
@@ -44,8 +44,7 @@ jobs:
       run: pip install google-cloud-aiplatform
 
     - name: Deploy to Vertex AI
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
       run: python deploy_to_vertex.py
-
-env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
