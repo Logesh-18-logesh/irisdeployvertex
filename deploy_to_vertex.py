@@ -12,7 +12,7 @@ def deploy_model():
     model = aiplatform.Model.upload(
         display_name='my-model',
         artifact_uri=f'gs://{bucket_name}/random_forest_model.pkl',
-        serving_container_image_uri=f'asia-south2-docker.pkg.dev/{project_id}/model-server/img:latest',
+        serving_container_image_uri=f'asia-south1-docker.pkg.dev/{project_id}/model-server/img:latest',
     )
 
     model.wait()  # Wait for the model to finish uploading
