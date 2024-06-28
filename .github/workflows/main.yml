@@ -36,7 +36,7 @@ jobs:
 
     - name: Upload model to GCS
       run: |
-        gsutil cp random_forest_model.pkl gs://$GCS_BUCKET_NAME/random_forest_model.pkl
+        gsutil cp random_forest_model.pkl gs://${{ secrets.GCS_BUCKET_NAME }}/random_forest_model.pkl
 
     - name: Install dependencies
       run: pip install google-cloud-aiplatform
