@@ -6,7 +6,7 @@ def deploy_model():
     project_id = os.getenv('GCP_PROJECT_ID')
     bucket_name = os.getenv('GCS_BUCKET_NAME')
 
-    aiplatform.init(project=project_id,location='asia-south1')
+    aiplatform.init(project=project_id,location='asia-east1')
 
     # Upload the model
     model = aiplatform.Model.upload(
