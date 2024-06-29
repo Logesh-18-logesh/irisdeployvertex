@@ -1,4 +1,5 @@
 pandas
 numpy
-Flask
-scikit-learn
+Flask ==3.0.3
+scikit-learn ==1.5.0
+gunicorn ==20.1.0
