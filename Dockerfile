@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8008
 
 # CMD to run the server script
-CMD ["gunicorn", "--bind", "0.0.0.0:8008", "serve:app"]
+CMD ["python3", "serve.py"]
