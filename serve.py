@@ -1,17 +1,38 @@
-from flask import Flask, request, jsonify
 import pickle
+from flask import Flask, jsonify, request
+import numpy as np
+
+# Load the pickled model
+with open('random_forest_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 app = Flask(__name__)
-
-# Load the model
-with open('random_forest_model.pkl', 'rb') as file:
-    model = pickle.load(file)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json(force=True)
-    prediction = model.predict([data['features']])
-    return jsonify({'prediction': prediction.tolist()})
+
+    # Validate input data
+    required_features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
+    for feature in required_features:
+        if feature not in data:
+            return jsonify({'error': f'Missing feature: {feature}'}), 400
+
+    # Extract features from JSON
+    try:
+        features = [float(data['sepal_length']), float(data['sepal_width']), float(data['petal_length']), float(data['petal_width'])]
+    except ValueError:
+        return jsonify({'error': 'One or more features are not numeric.'}), 400
+
+    # Convert features to array and reshape for prediction
+    X = np.array(features).reshape(1, -1)
+
+    # Make prediction
+    try:
+        prediction = model.predict(X)
+        return jsonify(prediction.tolist())
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500  # Internal Server Error for model prediction issues
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8008)
