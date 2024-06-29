@@ -3,7 +3,7 @@ import numpy as np
 import pickle
 
 # Load the pickled model
-with open('app/random_forest_model.pkl', 'rb') as f:
+with open('random_forest_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 app = Flask(__name__)
