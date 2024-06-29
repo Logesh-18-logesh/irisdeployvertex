@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 COPY random_forest_model.pkl random_forest_model.pkl
 # Make port 8008 available to the world outside this container
 EXPOSE 8008
