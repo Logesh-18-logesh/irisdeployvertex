@@ -24,10 +24,11 @@ jobs:
       run: |
           python3 -m pip install --upgrade pip
           pip install -r requirements.txt
+
     - name: Modify the model
       run: |
         python3 model.py
-    
+
     - name: Build Docker image
       run: |
         gcloud auth configure-docker asia-south2-docker.pkg.dev
