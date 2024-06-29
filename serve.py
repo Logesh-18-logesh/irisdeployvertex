@@ -1,6 +1,6 @@
-import pickle
 from flask import Flask, jsonify, request
 import numpy as np
+import pickle
 
 # Load the pickled model
 with open('random_forest_model.pkl', 'rb') as f:
@@ -35,4 +35,4 @@ def predict():
         return jsonify({'error': str(e)}), 500  # Internal Server Error for model prediction issues
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8008)
+    app.run(host='0.0.0.0', port=8008, debug=True)
