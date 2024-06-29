@@ -1,14 +1,17 @@
-# Use a base image with Python and libraries you need
-FROM python:3.8-slim
+# Use an official Python runtime as a parent image
+FROM python:latest
 
+# Set the working directory in the container
 WORKDIR /app
 
-COPY random_forest_model.pkl .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Install necessary libraries
-RUN pip install scikit-learn flask gunicorn
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy your inference script
-COPY serve.py .
+# Make port 8008 available to the world outside this container
+EXPOSE 8008
 
-CMD ["gunicorn", "-w 4", "serve:app"]
+# CMD to run the server script
+CMD ["gunicorn", "--bind", "0.0.0.0:8008", "serve:app"]
